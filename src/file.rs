@@ -88,6 +88,23 @@ pub fn append_to_file(file_path: &str, data: &str) {
     }
 }
 
+/// Overwrites data in a file
+pub fn overwrite_to_file(file_path: &str, data: &str) {
+    let file = std::fs::OpenOptions::new()
+        .create(true)
+        .write(true)
+        .open(file_path);
+
+    match file {
+        Ok(mut f) => {
+            f.write_all(data.as_bytes());
+        }
+        Err(_) => {
+            warn!("Error opening file at {}", file_path);
+        }
+    }
+}
+
 /// Returns a list of paths to files in a folder
 pub fn get_all_files_in_folder(path: &str) -> Result<Vec<String>, ()> {
     let entries = fs::read_dir(path);
